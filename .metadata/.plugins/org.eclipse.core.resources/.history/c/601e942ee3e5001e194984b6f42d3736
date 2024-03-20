@@ -1,0 +1,48 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainFrame extends JFrame{
+    private JFrame frame;
+    private JTextField studentNameField;
+    private JComboBox courseList;
+    private JButton addButton;
+
+    public MainFrame() {
+        prepareGUI();
+    }
+
+    public static void main(String[] args){
+        MainFrame swingControlDemo = new MainFrame();  
+        swingControlDemo.showEventDemo();       
+    }
+
+    private void prepareGUI(){
+        frame = new JFrame("Student Management System");
+        frame.setSize(400,400);
+        frame.setLayout(new FlowLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        studentNameField = new JTextField(10);
+        courseList = new JComboBox(new String[]{"Course 1", "Course 2", "Course 3"});
+        addButton = new JButton("Add");
+
+        frame.add(new JLabel("Student Name: "));
+        frame.add(studentNameField);
+        frame.add(new JLabel("Course: "));
+        frame.add(courseList);
+        frame.add(addButton);
+    }
+
+    private void showEventDemo(){
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {     
+                String data = "Name: " + studentNameField.getText();
+                data += ", Course: "+ courseList.getItemAt(courseList.getSelectedIndex()); 
+                JOptionPane.showMessageDialog(null, data);
+            }
+        }); 
+
+        frame.setVisible(true);  
+    }
+}

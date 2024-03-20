@@ -1,0 +1,189 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainFrame extends JFrame {
+    private List<Student> students;
+    private List<Course> courses;
+    //add default records into courses
+    {
+        courses.add(new Course("Math"));
+        courses.add(new Course("Science"));
+        courses.add(new Course("English"));
+    }
+
+    private JComboBox<String> studentComboBox;
+    private JComboBox<String> courseComboBox;
+    private JTextField gradeTextField;
+
+    public MainFrame() {
+        students = new ArrayList<>();
+        courses = new ArrayList<>();
+
+        // Initialize GUI components
+        studentComboBox = new JComboBox<>();
+        courseComboBox = new JComboBox<>();
+        gradeTextField = new JTextField();
+
+        JButton addStudentButton = new JButton("Add Student");
+        JButton enrollButton = new JButton("Enroll");
+        JButton assignGradeButton = new JButton("Assign Grade");
+
+        // Set layout
+        setLayout(new GridLayout(4, 2));
+
+        // Add components to the frame
+        add(new JLabel("Student:"));
+        add(studentComboBox);
+        add(new JLabel("Course:"));
+        add(courseComboBox);
+        add(new JLabel("Grade:"));
+        add(gradeTextField);
+        add(addStudentButton);
+        add(enrollButton);
+        add(assignGradeButton);
+
+        // Add event listeners
+        addStudentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentName = JOptionPane.showInputDialog("Enter student name:");
+                if (studentName != null && !studentName.isEmpty()) {
+                    Student student = new Student(studentName);
+                    students.add(student);
+                    updateStudentComboBox();
+                }
+            }
+        });
+
+        enrollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentName = (String) studentComboBox.getSelectedItem();
+                String courseName = (String) courseComboBox.getSelectedItem();
+
+                if (studentName != null && courseName != null) {
+                    Student student = getStudentByName(studentName);
+                    Course course = getCourseByName(courseName);
+
+                    if (student != null && course != null) {
+                        student.enroll(course);
+                        updateStudentComboBox();
+                    }
+                }
+            }
+        });
+
+        assignGradeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentName = (String) studentComboBox.getSelectedItem();
+                String courseName = (String) courseComboBox.getSelectedItem();
+                String grade = gradeTextField.getText();
+
+                if (studentName != null && courseName != null && !grade.isEmpty()) {
+                    Student student = getStudentByName(studentName);
+                    Course course = getCourseByName(courseName);
+
+                    if (student != null && course != null) {
+                        student.assignGrade(course, grade);
+                        updateStudentComboBox();
+                    }
+                }
+            }
+        });
+
+        // Set frame properties
+        setTitle("Student Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void updateStudentComboBox() {
+        studentComboBox.removeAllItems();
+        for (Student student : students) {
+            studentComboBox.addItem(student.getName());
+        }
+    }
+
+    private Student getStudentByName(String name) {
+        for (Student student : students) {
+            if (student.getName().equals(name)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    private Course getCourseByName(String name) {
+        for (Course course : courses) {
+            if (course.getName().equals(name)) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainFrame();
+            }
+        });
+    }
+}
+
+class Student {
+    private String name;
+    private List<Course> enrolledCourses;
+
+    public Student(String name) {
+        this.name = name;
+        enrolledCourses = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void enroll(Course course) {
+        enrolledCourses.add(course);
+    }
+
+    public void assignGrade(Course course, String grade) {
+        for (Course enrolledCourse : enrolledCourses) {
+            if (enrolledCourse.equals(course)) {
+                enrolledCourse.setGrade(grade);
+                break;
+            }
+        }
+    }
+}
+
+class Course {
+    private String name;
+    private String grade;
+
+    public Course(String name) {
+        this.name = name;
+        grade = "";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+}

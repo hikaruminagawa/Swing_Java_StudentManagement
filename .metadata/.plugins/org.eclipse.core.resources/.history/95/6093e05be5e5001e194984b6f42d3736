@@ -1,0 +1,94 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainFrame extends JFrame {
+    private JLabel nameLabel;
+    private JTextField nameTextField;
+    private JButton addStudentButton;
+    private JButton updateStudentButton;
+    private JButton viewStudentDetailsButton;
+    private JTable studentTable;
+    private JComboBox<String> courseComboBox;
+    private JList<String> studentList;
+    private JTable gradeTable;
+
+    public MainFrame() {
+        // Set up the main frame
+        setTitle("Student Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Create components
+        nameLabel = new JLabel("Name:");
+        nameTextField = new JTextField();
+        addStudentButton = new JButton("Add Student");
+        updateStudentButton = new JButton("Update Student");
+        viewStudentDetailsButton = new JButton("View Student Details");
+        studentTable = new JTable();
+        courseComboBox = new JComboBox<>();
+        studentList = new JList<>();
+        gradeTable = new JTable();
+
+        // Add components to the main frame
+        JPanel topPanel = new JPanel();
+        topPanel.add(nameLabel);
+        topPanel.add(nameTextField);
+        topPanel.add(addStudentButton);
+        topPanel.add(updateStudentButton);
+        topPanel.add(viewStudentDetailsButton);
+        add(topPanel, BorderLayout.NORTH);
+
+        add(new JScrollPane(studentTable), BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new GridLayout(1, 2));
+        bottomPanel.add(new JScrollPane(courseComboBox));
+        bottomPanel.add(new JScrollPane(studentList));
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        add(new JScrollPane(gradeTable), BorderLayout.EAST);
+
+        // Add event handlers
+        addStudentButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle add student button click
+                // Display add student form
+            }
+        });
+
+        updateStudentButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle update student button click
+                // Display update student form
+            }
+        });
+
+        viewStudentDetailsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle view student details button click
+                // Display student details form
+            }
+        });
+
+        courseComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle course selection
+                // Update student list and grade table based on selected course
+            }
+        });
+
+        // Set up the main frame
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainFrame();
+            }
+        });
+    }
+}

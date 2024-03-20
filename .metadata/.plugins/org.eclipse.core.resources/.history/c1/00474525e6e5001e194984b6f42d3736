@@ -1,0 +1,84 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainFrame extends JFrame {
+    private JLabel nameLabel, ageLabel, courseLabel;
+    private JTextField nameField, ageField;
+    private JComboBox<String> courseComboBox;
+    private JButton addButton, updateButton, viewButton;
+    private JTable studentTable;
+
+    public MainFrame() {
+        setTitle("Student Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLayout(new BorderLayout());
+
+        // Create components
+        nameLabel = new JLabel("Name:");
+        ageLabel = new JLabel("Age:");
+        courseLabel = new JLabel("Course:");
+        nameField = new JTextField();
+        ageField = new JTextField();
+        courseComboBox = new JComboBox<>();
+        addButton = new JButton("Add Student");
+        updateButton = new JButton("Update Student");
+        viewButton = new JButton("View Student Details");
+        studentTable = new JTable();
+
+        // Add components to the frame
+        JPanel inputPanel = new JPanel(new GridLayout(3, 2));
+        inputPanel.add(nameLabel);
+        inputPanel.add(nameField);
+        inputPanel.add(ageLabel);
+        inputPanel.add(ageField);
+        inputPanel.add(courseLabel);
+        inputPanel.add(courseComboBox);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(addButton);
+        buttonPanel.add(updateButton);
+        buttonPanel.add(viewButton);
+
+        add(inputPanel, BorderLayout.NORTH);
+        add(new JScrollPane(studentTable), BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Add event handlers
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle add student button click
+                // Display form to add a new student
+            }
+        });
+
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle update student button click
+                // Display form to update student information
+            }
+        });
+
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle view student details button click
+                // Display table with student details
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MainFrame frame = new MainFrame();
+                frame.setVisible(true);
+            }
+        });
+    }
+}

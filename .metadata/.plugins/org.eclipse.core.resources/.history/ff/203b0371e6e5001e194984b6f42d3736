@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainFrame extends JFrame {
+    private DefaultListModel<String> studentListModel;
+    private DefaultListModel<String> courseListModel;
+
+    public MainFrame() {
+        setTitle("Student Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+
+        // Create GUI components
+        JMenuBar menuBar = new JMenuBar();
+        JMenu studentMenu = new JMenu("Student");
+        JMenuItem addStudentMenuItem = new JMenuItem("Add Student");
+        JMenuItem updateStudentMenuItem = new JMenuItem("Update Student");
+        JMenuItem viewStudentDetailsMenuItem = new JMenuItem("View Student Details");
+        JMenu courseMenu = new JMenu("Course");
+        JMenuItem enrollStudentMenuItem = new JMenuItem("Enroll Student");
+        JMenuItem assignGradeMenuItem = new JMenuItem("Assign Grade");
+        JList<String> studentList = new JList<>();
+        JList<String> courseList = new JList<>();
+
+        // Initialize list models
+        studentListModel = new DefaultListModel<>();
+        courseListModel = new DefaultListModel<>();
+        studentList.setModel(studentListModel);
+        courseList.setModel(courseListModel);
+
+        // Add components to menu bar
+        studentMenu.add(addStudentMenuItem);
+        studentMenu.add(updateStudentMenuItem);
+        studentMenu.add(viewStudentDetailsMenuItem);
+        courseMenu.add(enrollStudentMenuItem);
+        courseMenu.add(assignGradeMenuItem);
+        menuBar.add(studentMenu);
+        menuBar.add(courseMenu);
+
+        // Add components to frame
+        setJMenuBar(menuBar);
+        getContentPane().setLayout(new GridLayout(1, 2));
+        getContentPane().add(new JScrollPane(studentList));
+        getContentPane().add(new JScrollPane(courseList));
+
+        // Add event listeners
+        addStudentMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement add student functionality
+            }
+        });
+
+        updateStudentMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement update student functionality
+            }
+        });
+
+        viewStudentDetailsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement view student details functionality
+            }
+        });
+
+        enrollStudentMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement enroll student functionality
+            }
+        });
+
+        assignGradeMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement assign grade functionality
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MainFrame frame = new MainFrame();
+                frame.setVisible(true);
+            }
+        });
+    }
+}

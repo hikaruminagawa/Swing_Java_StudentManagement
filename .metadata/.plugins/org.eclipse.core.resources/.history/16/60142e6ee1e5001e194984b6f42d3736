@@ -1,0 +1,59 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainFrame extends JFrame {
+    // GUI components
+    private JButton addStudentButton;
+    private JButton updateStudentButton;
+    private JButton viewStudentDetailsButton;
+    // ... add other components as needed
+
+    public MainFrame() {
+        // Set up the frame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLayout(new FlowLayout());
+
+        // Initialize components
+        addStudentButton = new JButton("Add Student");
+        updateStudentButton = new JButton("Update Student");
+        viewStudentDetailsButton = new JButton("View Student Details");
+        // ... initialize other components as needed
+
+        // Add components to frame
+        add(addStudentButton);
+        add(updateStudentButton);
+        add(viewStudentDetailsButton);
+        // ... add other components as needed
+
+        // Add event listeners
+        addStudentButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Code to add a student
+            }
+        });
+
+        updateStudentButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Code to update a student
+            }
+        });
+
+        viewStudentDetailsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Code to view student details
+            }
+        });
+
+        // ... add other event listeners as needed
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MainFrame().setVisible(true);
+            }
+        });
+    }
+}

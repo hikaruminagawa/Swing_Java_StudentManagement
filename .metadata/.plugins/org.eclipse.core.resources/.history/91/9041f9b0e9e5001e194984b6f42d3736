@@ -1,0 +1,247 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainFrame extends JFrame {
+    private List<Student> students;
+    private List<Course> courses;
+
+    private JComboBox<String> studentComboBox;
+    private JComboBox<String> courseComboBox;
+    private JTextArea studentDetailsTextArea;
+    private JTextArea courseDetailsTextArea;
+
+    public MainFrame() {
+        students = new ArrayList<>();
+        courses = new ArrayList<>();
+
+        setTitle("Student Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 400);
+        setLayout(new BorderLayout());
+
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout());
+
+        JLabel studentLabel = new JLabel("Select Student:");
+        studentComboBox = new JComboBox<>();
+        studentComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedStudent = (String) studentComboBox.getSelectedItem();
+                displayStudentDetails(selectedStudent);
+            }
+        });
+
+        JLabel courseLabel = new JLabel("Select Course:");
+        courseComboBox = new JComboBox<>();
+        courseComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedCourse = (String) courseComboBox.getSelectedItem();
+                displayCourseDetails(selectedCourse);
+            }
+        });
+
+        topPanel.add(studentLabel);
+        topPanel.add(studentComboBox);
+        topPanel.add(courseLabel);
+        topPanel.add(courseComboBox);
+
+        add(topPanel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(1, 2));
+
+        studentDetailsTextArea = new JTextArea();
+        studentDetailsTextArea.setEditable(false);
+        JScrollPane studentScrollPane = new JScrollPane(studentDetailsTextArea);
+
+        courseDetailsTextArea = new JTextArea();
+        courseDetailsTextArea.setEditable(false);
+        JScrollPane courseScrollPane = new JScrollPane(courseDetailsTextArea);
+
+        centerPanel.add(studentScrollPane);
+        centerPanel.add(courseScrollPane);
+
+        add(centerPanel, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout());
+
+        JButton addStudentButton = new JButton("Add Student");
+        addStudentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String studentName = JOptionPane.showInputDialog("Enter student name:");
+                if (studentName != null && !studentName.isEmpty()) {
+                    addStudent(studentName);
+                }
+            }
+        });
+
+        JButton enrollButton = new JButton("Enroll Student");
+        enrollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedStudent = (String) studentComboBox.getSelectedItem();
+                String selectedCourse = (String) courseComboBox.getSelectedItem();
+                enrollStudent(selectedStudent, selectedCourse);
+            }
+        });
+
+        JButton assignGradeButton = new JButton("Assign Grade");
+        assignGradeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedStudent = (String) studentComboBox.getSelectedItem();
+                String selectedCourse = (String) courseComboBox.getSelectedItem();
+                String grade = JOptionPane.showInputDialog("Enter grade:");
+                if (grade != null && !grade.isEmpty()) {
+                    assignGrade(selectedStudent, selectedCourse, grade);
+                }
+            }
+        });
+
+        bottomPanel.add(addStudentButton);
+        bottomPanel.add(enrollButton);
+        bottomPanel.add(assignGradeButton);
+
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    private void addStudent(String studentName) {
+        Student student = new Student(studentName);
+        students.add(student);
+        studentComboBox.addItem(student.getName());
+        updateStudentDetails();
+    }
+
+    private void enrollStudent(String studentName, String courseName) {
+        Student student = getStudentByName(studentName);
+        Course course = getCourseByName(courseName);
+        if (student != null && course != null) {
+            student.enroll(course);
+            updateStudentDetails();
+        }
+    }
+
+    private void assignGrade(String studentName, String courseName, String grade) {
+        Student student = getStudentByName(studentName);
+        Course course = getCourseByName(courseName);
+        if (student != null && course != null) {
+            student.assignGrade(course, grade);
+            updateStudentDetails();
+        }
+    }
+
+    private void displayStudentDetails(String studentName) {
+        Student student = getStudentByName(studentName);
+        if (student != null) {
+            studentDetailsTextArea.setText(student.toString());
+        }
+    }
+
+    private void displayCourseDetails(String courseName) {
+        Course course = getCourseByName(courseName);
+        if (course != null) {
+            courseDetailsTextArea.setText(course.toString());
+        }
+    }
+
+    private void updateStudentDetails() {
+        String selectedStudent = (String) studentComboBox.getSelectedItem();
+        displayStudentDetails(selectedStudent);
+    }
+
+    private Student getStudentByName(String studentName) {
+        for (Student student : students) {
+            if (student.getName().equals(studentName)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    private Course getCourseByName(String courseName) {
+        for (Course course : courses) {
+            if (course.getName().equals(courseName)) {
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainFrame();
+            }
+        });
+    }
+}
+
+class Student {
+    private String name;
+    private List<Course> enrolledCourses;
+    private List<String> grades;
+
+    public Student(String name) {
+        this.name = name;
+        enrolledCourses = new ArrayList<>();
+        grades = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void enroll(Course course) {
+        enrolledCourses.add(course);
+    }
+
+    public void assignGrade(Course course, String grade) {
+        int index = enrolledCourses.indexOf(course);
+        if (index != -1) {
+            grades.set(index, grade);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Enrolled Courses: ").append("\n");
+        for (Course course : enrolledCourses) {
+            sb.append("- ").append(course.getName()).append("\n");
+        }
+        sb.append("Grades: ").append("\n");
+        for (String grade : grades) {
+            sb.append("- ").append(grade).append("\n");
+        }
+        return sb.toString();
+    }
+}
+
+class Course {
+    private String name;
+
+    public Course(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Course Name: " + name;
+    }
+}
